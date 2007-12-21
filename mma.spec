@@ -11,6 +11,7 @@ Source:		http://mypage.uniserve.ca/~bvdp/mma/%{name}-bin-%{version}.tar.bz2
 URL:		http://www.kootenay.com/~bvdpoel/music.html
 License:	GPL
 Group:		Sound
+BuildRoot:	%{_tmppath}/%{name}-buildroot
 Requires:	python
 BuildArch:	noarch
 
