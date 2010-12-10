@@ -1,6 +1,6 @@
 %define name	mma
 %define version 0.20
-%define release %mkrel 4
+%define release %mkrel 5
 
 Name: 	 	%{name}
 Summary: 	Musical MIDI Accompaniment
