@@ -1,17 +1,16 @@
 %define name	mma
-%define version 0.20
-%define release %mkrel 5
+%define version 12.02
+%define release %mkrel 1
 
 Name: 	 	%{name}
 Summary: 	Musical MIDI Accompaniment
 Version: 	%{version}
 Release: 	%{release}
 
-Source:		http://mypage.uniserve.ca/~bvdp/mma/%{name}-bin-%{version}.tar.bz2
+Source0:	http://mypage.uniserve.ca/~bvdp/mma/%{name}-bin-%{version}.tar.gz
 URL:		http://www.kootenay.com/~bvdpoel/music.html
-License:	GPL
+License:	GPLv2+
 Group:		Sound
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Requires:	python
 BuildArch:	noarch
 
@@ -27,26 +26,34 @@ MMA is a command line driven program. It creates MIDI files which need a
 sequencer or MIDI file play program.
 
 %prep
-%setup -q -n %name-bin-%version
+%setup -q -n %{name}-bin-%{version}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p %buildroot/%_bindir
-mkdir -p %buildroot/%_datadir/%name
-cp %name %buildroot/%_bindir
-cp -r lib %buildroot/%_datadir/%name
-cp -r includes %buildroot/%_datadir/%name
-cp -r modules %buildroot/%_datadir/%name
+install -d -m 755 %{buildroot}%{_bindir}
+install -d -m 755 %{buildroot}%{_datadir}/%{name}
+install -d -m 755 %{buildroot}%{py_sitedir}
+install -d -m 755 %{buildroot}%{_docdir}
+install -d -m 755 %{buildroot}%{_mandir}/man1
+install -d -m 755 %{buildroot}%{_mandir}/man8
+install -D mma.py %{buildroot}%{_bindir}/mma
+cp -a lib %{buildroot}%{_datadir}/%{name}/lib
+cp -a includes %{buildroot}%{_datadir}/%{name}/includes
+cp -a MMA %{buildroot}%{py_sitedir}/MMA
+cp -a docs/html %{buildroot}%{_docdir}/%{name}
+for file in util/*.py
+do
+	prog=`echo "$file" | sed 's|^util/||' | sed 's|.py$||'`
+	install -D -m 755 "$file" "%{buildroot}%{_bindir}/$prog"
+done
+install -m 644 docs/man/*.1 %{buildroot}%{_mandir}/man1/
+install -m 644 docs/man/*.8 %{buildroot}%{_mandir}/man8/
 
 %post
 mma -G
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
-%defattr(-,root,root)
-%doc ANNOUNCE CHANGES CONTRIB FAKEBOOKS FAQ README SLASHCHORDS SYNTHS TODO egs
-%{_bindir}/%name
-%{_datadir}/%name
-
+%doc text/* egs util/README.*
+%{_bindir}/*
+%{py_sitedir}/MMA
+%{_datadir}/%{name}
+%{_mandir}/man?/*
