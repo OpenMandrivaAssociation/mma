@@ -8,7 +8,7 @@ Version: 	%{version}
 Release: 	%{release}
 
 Source0:	http://mypage.uniserve.ca/~bvdp/mma/%{name}-bin-%{version}.tar.gz
-URL:		http://www.kootenay.com/~bvdpoel/music.html
+URL:		https://www.kootenay.com/~bvdpoel/music.html
 License:	GPLv2+
 Group:		Sound
 Requires:	python
